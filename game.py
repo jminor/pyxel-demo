@@ -68,6 +68,7 @@ class Player(Sprite):
     def __init__(self, name, x, y, t):
         super().__init__(name, x, y, t)
         self.gems = 0
+        self.facing = "east"
 
     def keys_pressed(self, *keys):
         for k in keys:
@@ -81,14 +82,18 @@ class Player(Sprite):
         cy = 0
         if self.keys_pressed(pyxel.KEY_UP, pyxel.KEY_W):
             cy -= 1
+            self.facing = "north"
         if self.keys_pressed(pyxel.KEY_DOWN, pyxel.KEY_S):
             cy += 1
+            self.facing = "south"
         if self.keys_pressed(pyxel.KEY_LEFT, pyxel.KEY_A):
             cx -= 1
             self.xflip = -1
+            self.facing = "east"
         if self.keys_pressed(pyxel.KEY_RIGHT, pyxel.KEY_D):
             cx += 1
             self.xflip = 1
+            self.facing = "west"
 
         if walkable(self.x + cx, self.y + cy):
             self.x += cx
