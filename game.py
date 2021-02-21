@@ -1,4 +1,5 @@
 import pyxel
+import math
 
 SPEED = 0.4
 DEBUG = None
@@ -18,6 +19,21 @@ def walkable(x, y):
     """Is the map tile at x,y walkable?"""
     t = pyxel.tilemap(0).get(x,y)
     return t == 0
+
+def wobble(amount):
+    t = 5 * pyxel.frame_count / 30.0
+    off = pyxel.image(2)
+    screen = pyxel.image(4, system=True)
+    off.copy(0,0, 4, 0,0, pyxel.width,pyxel.height)
+    # x = amount * math.sin(t)
+    for y in range(pyxel.height):
+        x = amount * math.sin(10 * (y / pyxel.height) + t)
+        screen.copy(
+            x,y,
+            2,
+            0,y,
+            pyxel.width,1
+        )
 
 class Thing:
     def __init__(self, name, x, y):
@@ -110,6 +126,7 @@ class App:
 
     def reset(self):
         pyxel.load("assets/my_resource.pyxres")
+        self.fade_in = 30
         self.camera = Thing("camera", 0, 0)
         self.sprites = []
         self.colliders = []
@@ -208,6 +225,10 @@ class App:
             sprite.draw(self.camera)
 
         self.player.draw(self.camera)
+
+        if self.fade_in > 0:
+            wobble(self.fade_in)
+            self.fade_in = self.fade_in - 1
 
         pyxel.text(1, 1, "GEMS: {}".format(self.player.gems), 7)
         if DEBUG is not None:
