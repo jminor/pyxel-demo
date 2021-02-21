@@ -182,7 +182,16 @@ class App:
                 self.pickup_gem(thing)
 
         # camera follows the player
-        self.camera.x = self.player.x - 8
+        # self.camera.y = self.player.y - 8
+
+        if self.player.x <= self.camera.x or self.player.x >= self.camera.x+15:
+            self.camera.x = self.player.x - 8
+        if self.player.y <= self.camera.y or self.player.y >= self.camera.y+15:
+            self.camera.y = self.player.y - 8
+
+        # camera scrolls at a different speed than everything else
+        self.camera.update(0.5)
+
         global DEBUG
         DEBUG = "\nPL {},{}\n{},{}\nCAM {},{}\n{},{}".format(
             self.player.x, self.player.y,
@@ -190,9 +199,6 @@ class App:
             self.camera.x, self.camera.y,
             self.camera.px, self.camera.py
         )
-        self.camera.y = self.player.y - 8
-        # camera scrolls slower than everything else
-        self.camera.update(SPEED/2)
 
     def draw(self):
         pyxel.cls(0)
