@@ -105,13 +105,16 @@ class Player(Sprite):
 class App:
     def __init__(self):
         pyxel.init(128, 128)
+        self.reset()
+        pyxel.run(self.update, self.draw)
+
+    def reset(self):
         pyxel.load("assets/my_resource.pyxres")
         self.camera = Thing("camera", 0, 0)
         self.sprites = []
         self.colliders = []
         self.tilemap = pyxel.tilemap(0)
         self.scan_map()
-        pyxel.run(self.update, self.draw)
 
     def colliders_at(self, x, y):
         # result = []
@@ -164,6 +167,9 @@ class App:
         self.colliders.remove(gem)
 
     def update(self):
+        if pyxel.btnp(pyxel.KEY_R):
+            self.reset()
+
         self.player.update()
 
         for sprite in self.sprites:
