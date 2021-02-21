@@ -1,6 +1,7 @@
 import pyxel
 
 SPEED = 0.4
+DEBUG = None
 
 def lerp(a, b, t):
     """lerp = linear interpolation.
@@ -176,6 +177,13 @@ class App:
 
         # camera follows the player
         self.camera.x = self.player.x - 8
+        global DEBUG
+        DEBUG = "\nPL {},{}\n{},{}\nCAM {},{}\n{},{}".format(
+            self.player.x, self.player.y,
+            self.player.px, self.player.py,
+            self.camera.x, self.camera.y,
+            self.camera.px, self.camera.py
+        )
         self.camera.y = self.player.y - 8
         # camera scrolls slower than everything else
         self.camera.update(SPEED/2)
@@ -190,5 +198,7 @@ class App:
         self.player.draw(self.camera)
 
         pyxel.text(1, 1, "GEMS: {}".format(self.player.gems), 7)
+        if DEBUG is not None:
+            pyxel.text(1, 9, "DEBUG: {}".format(DEBUG), 8)
 
 App()
